@@ -27,3 +27,12 @@ arduino-cli compile --fqbn esp32:esp32:esp32s3 anva_controller
 ```
 
 For the S3 set `BOARD BOARD_ESP32S3_N16R8` in `secrets.h` (and likely PSRAM/flash options for N16R8, e.g. `--fqbn esp32:esp32:esp32s3:PSRAM=opi`, to be confirmed against the board). Record the results here.
+
+
+## Update: compiled (2026-11-17)
+Tool: arduino-cli 1.6.0, esp32:esp32 core 3.3.13, Adafruit MCP23017 2.3.2, PubSubClient 2.8, ArduinoJson 7.4.3. Config copied from `secrets.h.example` (placeholders only).
+| Target | Config | Result |
+|---|---|---|
+| esp32:esp32:esp32 | BOARD_ESP32_DEVKIT_V1, esp32_01, relays 1-16, HAS_AC false | Compiled, 1029797 B flash (78%), 49344 B RAM (15%) |
+| esp32:esp32:esp32s3 | BOARD_ESP32S3_N16R8, esp32_02, FIRST_RELAY 17, HAS_AC true | Compiled, 978494 B flash (74%), 48200 B RAM (14%) |
+Compiling proves syntax and library API use only. It does not verify pins, I2C addresses, polarity, PSRAM/USB settings on the S3, or any runtime behaviour. The earlier "not performed" statement above is superseded by this table; the "Not verified" items remain open.
