@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { gateCommand, controllerOf } from './gate.js';
+const ctx = { ac: { fault: false, overload: false, phaseFail: false, estop: false }, offSince: null, now: 1e6 };
+test('relay range', () => { assert.equal(gateCommand({ id: 'a', type: 'relay', relay: 31, on: true }, ctx), null); assert.ok(gateCommand({ id: 'a', type: 'relay', relay: 32, on: true }, ctx)); });
+test('ac blocked without telemetry', () => assert.ok(gateCommand({ id: 'a', type: 'ac', on: true }, { now: 1 })));
+test('ac blocked on overload', () => assert.ok(gateCommand({ id: 'a', type: 'ac', on: true }, { ...ctx, ac: { ...ctx.ac, overload: true } })));
+test('ac min off time', () => assert.ok(gateCommand({ id: 'a', type: 'ac', on: true }, { ...ctx, offSince: ctx.now - 1000 })));
+test('ac disable always ok', () => assert.equal(gateCommand({ id: 'a', type: 'ac', on: false }, { now: 1 }), null));
+test('routing', () => { assert.equal(controllerOf({ type: 'relay', relay: 16 }), 'esp32_01'); assert.equal(controllerOf({ type: 'relay', relay: 17 }), 'esp32_02'); assert.equal(controllerOf({ type: 'ac' }), 'esp32_02'); });

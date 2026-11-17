@@ -1,0 +1,5 @@
+{
+  "users": [
+    { "username": "alice", "role": "admin", "salt": "<hex, 16 bytes>", "hash": "<hex, scrypt N=16384 r=8 p=1 keylen=64>" }
+  ]
+}
